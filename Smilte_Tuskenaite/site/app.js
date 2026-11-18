@@ -27,7 +27,8 @@ function selectAnimal(card, animal) {
 
   const light = animal.light_level === "H" ? "bright light" : "low light";
   detail.innerHTML = `
-    <h2>${animal.common_name}</h2>
+  <img class="detail-photo" src="images/${animal.species_id}.jpg" alt="${animal.common_name}" onerror="this.remove()">  
+  <h2>${animal.common_name}</h2>
     <p class="latin">${animal.latin_name}</p>
     <p>Flicker fusion: <strong>${animal.flicker_fusion_hz} Hz</strong> (human: 60 Hz)</p>
     <p>Body mass: ${animal.body_mass_g} g</p>

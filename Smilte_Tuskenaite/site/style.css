@@ -80,3 +80,12 @@ header p { color: var(--muted); margin-top: 0; }
 .latin { font-style: italic; color: var(--muted); margin-top: 0; }
 
 footer { color: var(--muted); font-size: 0.85rem; }
+
+.detail-photo {
+  width: 100%;
+  max-width: 260px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.6rem;
+}
