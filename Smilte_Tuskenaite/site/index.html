@@ -27,6 +27,33 @@
   </main>
 
   <footer>
+       <section id="vision">
+    <h2>How do they see it?</h2>
+    <p>Pick an animal, then drag the slider from the human view to theirs.</p>
+
+    <div id="vision-picker">
+      <button data-id="canis-lupus-familiaris"><img src="images/canis-lupus-familiaris.jpg" alt=""><span>Dog</span></button>
+      <button data-id="felis-catus"><img src="images/felis-catus.jpg" alt=""><span>Cat</span></button>
+      <button data-id="gallus-gallus-domesticus"><img src="images/gallus-gallus-domesticus.jpg" alt=""><span>Chicken</span></button>
+      <button data-id="macaca-mulatta"><img src="images/macaca-mulatta.jpg" alt=""><span>Macaque</span></button>
+      <button data-id="pagophilus-groenlandicus"><img src="images/pagophilus-groenlandicus.jpg" alt=""><span>Harp seal</span></button>
+      <button data-id="gekko-gecko"><img src="images/gekko-gecko.jpg" alt=""><span>Gecko</span></button>
+      <button data-id="spermophilus-lateralis"><img src="images/spermophilus-lateralis.jpg" alt=""><span>Squirrel</span></button>
+      <button data-id="columba-livia"><img src="images/columba-livia.jpg" alt=""><span>Pigeon</span></button>
+    </div>
+
+    <div id="vision-box">
+      <img id="vision-human" src="vision/scene.jpg" alt="Human view of a meadow">
+      <img id="vision-animal" src="vision/canis-lupus-familiaris.jpg" alt="Animal view of the meadow">
+    </div>
+
+    <div id="vision-controls">
+      <span>Human</span>
+      <input type="range" id="vision-slider" min="0" max="100" value="0">
+      <span id="vision-animal-name">Dog</span>
+    </div>
+    <p id="vision-caption"></p>
+  </section>
     Data: Healy et al. (2013), Animal Behaviour 86, 685-696, Table 1.
   </footer>
 

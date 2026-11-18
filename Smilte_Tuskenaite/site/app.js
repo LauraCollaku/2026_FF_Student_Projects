@@ -55,3 +55,46 @@ for (const button of document.querySelectorAll(".filter")) {
 }
 
 showGrid();
+
+// ---------- "How do they see it?" slider ----------
+
+// Short text for each animal (numbers come from data/vision_parameters.csv)
+const VISION_INFO = {
+  "canis-lupus-familiaris": { name: "Dog", text: "Two kinds of colour cells (blue and yellow), so red and green look alike. About 12 cycles per degree of sharpness; humans have about 60." },
+  "felis-catus": { name: "Cat", text: "Two kinds of colour cells, like the dog. About 8 cycles per degree of sharpness." },
+  "gallus-gallus-domesticus": { name: "Chicken", text: "Four kinds of colour cells, including ultraviolet, which a screen cannot show. About 7 cycles per degree of sharpness." },
+  "macaca-mulatta": { name: "Macaque", text: "Three kinds of colour cells, like us, and sharp vision: about 24 cycles per degree." },
+  "pagophilus-groenlandicus": { name: "Harp seal", text: "Only one kind of cone, so no colour. About 5.6 cycles per degree (measured in harbour seals)." },
+  "gekko-gecko": { name: "Gecko", text: "Three kinds of colour cells. Sharpness is a stand-in value of 2 cycles per degree, taken from a wall lizard." },
+  "spermophilus-lateralis": { name: "Squirrel", text: "Two kinds of colour cells. About 4 cycles per degree of sharpness." },
+  "columba-livia": { name: "Pigeon", text: "Four kinds of colour cells, including ultraviolet, which a screen cannot show. About 12.8 cycles per degree." }
+};
+
+const visionButtons = document.querySelectorAll("#vision-picker button");
+const visionAnimalImg = document.getElementById("vision-animal");
+const visionSlider = document.getElementById("vision-slider");
+const visionName = document.getElementById("vision-animal-name");
+const visionCaption = document.getElementById("vision-caption");
+
+// Show the chosen animal's view and mark its button
+function pickVisionAnimal(id) {
+  visionAnimalImg.src = `vision/${id}.jpg`;
+  visionName.textContent = VISION_INFO[id].name;
+  visionCaption.textContent = VISION_INFO[id].text;
+  visionButtons.forEach((button) => {
+    button.classList.toggle("picked", button.dataset.id === id);
+  });
+}
+
+// Clicking a picture picks that animal
+visionButtons.forEach((button) => {
+  button.addEventListener("click", () => pickVisionAnimal(button.dataset.id));
+});
+
+// Moving the slider fades the animal's picture in over the human one
+visionSlider.addEventListener("input", () => {
+  visionAnimalImg.style.opacity = visionSlider.value / 100;
+});
+
+// Start with the dog
+pickVisionAnimal("canis-lupus-familiaris");
