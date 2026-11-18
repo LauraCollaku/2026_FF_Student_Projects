@@ -89,3 +89,29 @@ footer { color: var(--muted); font-size: 0.85rem; }
   border-radius: 10px;
   margin-bottom: 0.6rem;
 }
+
+.blink-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.8rem 0;
+}
+
+.dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink linear infinite;
+}
+
+@keyframes blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0.1; }
+}
+
+.blink-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+}

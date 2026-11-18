@@ -31,6 +31,13 @@ function selectAnimal(card, animal) {
   <h2>${animal.common_name}</h2>
     <p class="latin">${animal.latin_name}</p>
     <p>Flicker fusion: <strong>${animal.flicker_fusion_hz} Hz</strong> (human: 60 Hz)</p>
+        <div class="blink-row">
+      <span class="blink-label">Human</span>
+      <span class="dot" style="animation-duration: ${20 / 60}s"></span>
+      <span class="blink-label">${animal.common_name}</span>
+      <span class="dot" style="animation-duration: ${20 / animal.flicker_fusion_hz}s"></span>
+      <span class="blink-note">(shown 20× slower)</span>
+    </div>
     <p>Body mass: ${animal.body_mass_g} g</p>
     <p>Lives in: ${light}</p>
   `;
