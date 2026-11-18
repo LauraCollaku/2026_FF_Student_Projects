@@ -41,3 +41,38 @@ I used Claude, an AI assistant, to help find the source paper, to draft the scri
 
 ## Photo credits
 The animal photos are from Pexels ,free to use under their licences: https://www.pexels.com
+
+## Vision viewer
+
+The "How do they see it?" section on the website shows a meadow photo as a
+human sees it and as eight animals might see it. The animal versions are
+simple models, not exact pictures. Colour comes from how many cone types
+the animal has, and blur comes from its visual acuity (cycles per degree;
+humans resolve about 60). The numbers are in `data/vision_parameters.csv`.
+The script `scripts/make_vision_images.py` turns the meadow photo
+(`site/vision/scene.jpg`) into one picture per animal. It assumes the photo
+covers 10 degrees of the view. Ultraviolet (chicken, pigeon) cannot be
+shown on a screen. The gecko's acuity is a stand-in value from a wall lizard.
+
+To remake the pictures:
+
+    python scripts/make_vision_images.py
+
+The meadow photo is from Pexels (https://www.pexels.com).
+
+### Sources for the vision numbers
+
+- Neitz J, Geist T, Jacobs GH (1989). Color vision in the dog. Visual Neuroscience 3(2):119-125.
+- Daw NW, Pearlman AL (1969). Cat colour vision: one cone process or several? Journal of Physiology 201:745-764.
+- Bowmaker JK, Knowles A (1977). The visual pigments and oil droplets of the chicken retina. Vision Research 17:755-764.
+- Jarvis JR et al. (2009). Measuring and modelling the spatial contrast sensitivity of the chicken. Vision Research 49(11):1448-1454.
+- Bowmaker JK et al. (1991). Photosensitive and photostable pigments in the retinae of Old World monkeys. Journal of Experimental Biology 156:1-19.
+- Ver Hoeve JN et al. (1999). VEP and PERG acuity in anesthetized young adult rhesus monkeys. Visual Neuroscience 16(4):607-617.
+- Peichl L, Behrmann G, Kroger RHH (2001). For whales and seals the ocean is not blue: a visual pigment loss in marine mammals. European Journal of Neuroscience.
+- Hanke FD, Dehnhardt G (2009). Aerial visual acuity in harbor seals (as reported in a review of harbor seal senses).
+- Blow NS (2004). Molecular evolution of visual pigments of the Tokay gecko and bluefin killifish. PhD dissertation, Syracuse University.
+- Kawamoto A et al. (2025). How lacertids resolve spatial details: visual acuity in the common wall lizard. 
+- Jacobs GH, Yolton RL (1969). Dichromacy in the ground squirrel. Nature 223:414-415.
+- Jacobs GH et al. (2002). Ground squirrel retina and visual capacity (spatial acuity about 4 cycles/deg).
+- Pigeon frontal-field acuity study (2005). Limits of visual acuity in the frontal field of the rock pigeon. Perception.
+- Caves EM, Brandley NC, Johnsen S (2018). Visual acuity and the evolution of signals. Trends in Ecology and Evolution.
