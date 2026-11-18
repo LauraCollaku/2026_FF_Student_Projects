@@ -38,3 +38,6 @@ Limits: the groups are small, species are related by evolution so they are not i
 
 ## Use of AI assistance
 I used Claude, an AI assistant, to help find the source paper, to draft the scripts and to explain the Git steps. 
+
+## Photo credits
+The animal photos are from Pexels mainly,free to use under their licences: https://www.pexels.com
