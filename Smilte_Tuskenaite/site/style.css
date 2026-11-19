@@ -304,3 +304,117 @@ footer { color: var(--muted); font-size: 0.85rem; }
   text-align: left;
   z-index: 10;
 }
+
+/* ---------- Result cards ---------- */
+#result-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.result-card {
+  flex: 1 1 170px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 0.9rem;
+  font-size: 0.9rem;
+}
+
+.result-card h3 {
+  margin: 0 0 0.3rem;
+}
+
+.result-big {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--accent);
+  margin: 0.2rem 0;
+}
+
+.result-small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* ---------- Group buttons, box and layout ---------- */
+#results {
+  max-width: 980px;   /* wider, so the plot and the box fit side by side */
+}
+
+#group-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+#group-buttons button {
+  background: var(--card);
+  color: var(--text);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+#group-buttons button:hover {
+  border-color: var(--accent);
+}
+
+/* The chosen button takes the colour of its group */
+#group-buttons button.active {
+  color: var(--bg);
+  font-weight: bold;
+}
+#group-buttons button[data-group="all"].active { background: var(--accent); }
+#group-buttons button[data-group="H"].active   { background: #f2994a; }
+#group-buttons button[data-group="L"].active   { background: #5aa9e6; }
+
+/* Plot on the left, explanation box on the right (stacks on narrow screens) */
+#plot-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+#plot-layout #plot-box {
+  flex: 1 1 420px;
+  margin: 0;
+}
+
+#group-box {
+  flex: 1 1 220px;
+  max-width: 280px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+/* Dots outside the chosen group fade out smoothly */
+.plot-dot {
+  transition: opacity 0.4s;
+}
+
+.plot-dot.faded {
+  opacity: 0.15 !important;
+}
+
+/* Trend lines */
+.trend-line {
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+  pointer-events: none;
+}
+.trend-all { stroke: var(--accent); }
+.trend-H   { stroke: #ffb36b; }
+.trend-L   { stroke: #8cc8f5; }

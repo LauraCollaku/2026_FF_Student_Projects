@@ -254,3 +254,79 @@ document.querySelectorAll(".plot-dot").forEach((dot) => {
     if (event.key === "Enter") goToCard(dot.dataset.id);
   });
 });
+
+// ---------- Result cards ----------
+const LIGHT_NAMES = { all: "All species", H: "Bright light", L: "Dim light" };
+
+// Turn the correlation number into a plain-words description
+function linkStrength(r) {
+  const size = Math.abs(r);
+  if (size < 0.2) return "almost no link";
+  if (size < 0.4) return "a weak link";
+  if (size < 0.7) return "a moderate link";
+  return "a strong link";
+}
+
+// ---------- Group buttons: highlight a group and explain it ----------
+const groupButtons = document.querySelectorAll("#group-buttons button");
+const groupBox = document.getElementById("group-box");
+
+function selectGroup(group) {
+  // Mark the chosen button
+  groupButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.group === group);
+  });
+
+  // Fade the dots that are not in the group
+  document.querySelectorAll(".plot-dot").forEach((dot) => {
+    const animal = SPECIES.find((item) => item.species_id === dot.dataset.id);
+    const inGroup = group === "all" || animal.light_level === group;
+    dot.classList.toggle("faded", !inGroup);
+  });
+
+  // Fill the box with this group's numbers
+  const row = FIT.find((item) => item.light_level === group);
+  groupBox.innerHTML = `
+    <h3>${LIGHT_NAMES[group]}</h3>
+    <p class="result-big">r = ${row.correlation_r}</p>
+    <p>${linkStrength(row.correlation_r)} between body mass and flicker fusion.</p>
+    <p class="result-small">${row.n_species} species &middot; ${row.slope_hz_per_10x_mass} Hz for every 10&times; more body mass</p>
+  `;
+    drawTrendLine(group, row);
+}
+
+groupButtons.forEach((button) => {
+  button.addEventListener("click", () => selectGroup(button.dataset.group));
+});
+
+// ---------- Trend line for the chosen group ----------
+function drawTrendLine(group, row) {
+  // Remove the previous line, if there is one
+  const oldLine = plotSvg.querySelector(".trend-line");
+  if (oldLine) oldLine.remove();
+
+  // The line runs over the body masses of the animals in this group
+  const members = SPECIES.filter((animal) => group === "all" || animal.light_level === group);
+  const logMassesInGroup = members.map((animal) => Math.log10(animal.body_mass_g));
+  const logStart = Math.min(...logMassesInGroup);
+  const logEnd = Math.max(...logMassesInGroup);
+
+  // The fitted line from analyse_cff.py: Hz = intercept + slope * log10(body mass)
+  const hzAt = (logMass) => row.intercept_hz + row.slope_hz_per_10x_mass * logMass;
+
+  const line = svgEl("line", {
+    x1: xPos(10 ** logStart), y1: yPos(hzAt(logStart)),
+    x2: xPos(10 ** logEnd),   y2: yPos(hzAt(logEnd)),
+    class: `trend-line trend-${group}`
+  });
+  // Put it before the dots in the drawing, so the dots stay on top
+  plotSvg.insertBefore(line, plotSvg.querySelector(".plot-dot"));
+
+  // Animate: draw the line from left to right
+  const length = line.getTotalLength();
+  line.style.strokeDasharray = length;
+  line.style.strokeDashoffset = length;
+  line.getBoundingClientRect();   // lets the browser register the starting state
+  line.style.transition = "stroke-dashoffset 1s ease";
+  line.style.strokeDashoffset = 0;
+}
