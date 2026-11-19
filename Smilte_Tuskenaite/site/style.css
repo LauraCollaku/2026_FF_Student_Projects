@@ -198,3 +198,38 @@ footer { color: var(--muted); font-size: 0.85rem; }
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+/* ---------- "What the data shows" section ---------- */
+#results {
+  max-width: 720px;
+  margin: 2.5rem auto;
+  text-align: center;
+}
+
+#results img {
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  margin: 1rem 0;
+}
+
+.results-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ---------- Scroll reveal animation ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}

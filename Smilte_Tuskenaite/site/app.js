@@ -98,3 +98,19 @@ visionSlider.addEventListener("input", () => {
 
 // Start with the dog
 pickVisionAnimal("canis-lupus-familiaris");
+
+// ---------- Scroll reveal animation ----------
+// When an element marked "reveal" scrolls into view, add the class "visible".
+// The CSS then fades and slides it in.
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);   // play only once
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(".reveal").forEach((element) => {
+  revealObserver.observe(element);
+});
