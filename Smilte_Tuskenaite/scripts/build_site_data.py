@@ -49,3 +49,17 @@ shutil.copy(
     site_results / "cff_vs_mass.png",
 )
 print("Copied cff_vs_mass.png into site/results")
+
+
+# Write the analysis results (fit_summary.csv) for the website's result cards
+import json
+
+import pandas as pd
+
+fit = pd.read_csv(Path(__file__).resolve().parent.parent / "results" / "fit_summary.csv")
+fit_file = Path(__file__).resolve().parent.parent / "site" / "fit_data.js"
+fit_file.write_text(
+    "const FIT = " + json.dumps(fit.to_dict(orient="records"), indent=2) + ";\n",
+    encoding="utf-8",
+)
+print("Saved fit_data.js")
