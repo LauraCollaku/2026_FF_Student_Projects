@@ -255,7 +255,7 @@ document.querySelectorAll(".plot-dot").forEach((dot) => {
   });
 });
 
-// ---------- Result cards ----------
+// ---------- Group names and plain-words description ----------
 const LIGHT_NAMES = { all: "All species", H: "Bright light", L: "Dim light" };
 
 // Turn the correlation number into a plain-words description
@@ -292,11 +292,28 @@ function selectGroup(group) {
     <p>${linkStrength(row.correlation_r)} between body mass and flicker fusion.</p>
     <p class="result-small">${row.n_species} species &middot; ${row.slope_hz_per_10x_mass} Hz for every 10&times; more body mass</p>
   `;
-    drawTrendLine(group, row);
+
+  drawTrendLine(group, row);
 }
 
+// Put everything back to the starting state: no group chosen
+function clearGroup() {
+  groupButtons.forEach((button) => button.classList.remove("active"));
+  document.querySelectorAll(".plot-dot").forEach((dot) => dot.classList.remove("faded"));
+  const oldLine = plotSvg.querySelector(".trend-line");
+  if (oldLine) oldLine.remove();
+  groupBox.innerHTML = "<p>Choose a group above to see its trend line and what it means.</p>";
+}
+
+// Clicking the active button again switches it off; any other click selects that group
 groupButtons.forEach((button) => {
-  button.addEventListener("click", () => selectGroup(button.dataset.group));
+  button.addEventListener("click", () => {
+    if (button.classList.contains("active")) {
+      clearGroup();
+    } else {
+      selectGroup(button.dataset.group);
+    }
+  });
 });
 
 // ---------- Trend line for the chosen group ----------
