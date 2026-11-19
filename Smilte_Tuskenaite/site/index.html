@@ -30,7 +30,10 @@
         <section id="results" class="reveal">
     <h2>What the data shows</h2>
     <p>Each dot is one of the 34 species. Orange dots live in bright light, blue dots in dim light.</p>
-    <img src="results/cff_vs_mass.png" alt="Flicker fusion frequency against body mass for 34 vertebrate species">
+        <div id="plot-box">
+      <svg id="plot" viewBox="0 0 640 400" role="img" aria-label="Flicker fusion frequency against body mass for 34 vertebrate species"></svg>
+      <div id="plot-tooltip" hidden></div>
+    </div>
     <p class="results-note">Among bright-light animals, bigger bodies tend to go with slower flicker fusion. Among dim-light animals there is no clear trend. This is a pattern in 34 species, not proof of a cause.</p>
   </section>   
     <section id="vision">

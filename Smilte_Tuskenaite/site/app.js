@@ -114,3 +114,143 @@ const revealObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll(".reveal").forEach((element) => {
   revealObserver.observe(element);
 });
+
+// ---------- Interactive plot ----------
+const PLOT = { width: 640, height: 400, left: 56, right: 40, top: 20, bottom: 52 };
+const plotSvg = document.getElementById("plot");
+
+// Helper: make one SVG shape (line, circle, text) and give it attributes
+function svgEl(tag, attributes) {
+  const element = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const name in attributes) {
+    element.setAttribute(name, attributes[name]);
+  }
+  return element;
+}
+
+// The range of the axes, worked out from the data
+const logMasses = SPECIES.map((animal) => Math.log10(animal.body_mass_g));
+const xMin = Math.floor(Math.min(...logMasses));
+const xMax = Math.ceil(Math.max(...logMasses));
+const maxHz = Math.max(...SPECIES.map((animal) => animal.flicker_fusion_hz));
+const yMax = Math.ceil((maxHz + 10) / 20) * 20;
+
+// Turn a data value into a position on the drawing
+function xPos(bodyMassG) {
+  const fraction = (Math.log10(bodyMassG) - xMin) / (xMax - xMin);
+  return PLOT.left + fraction * (PLOT.width - PLOT.left - PLOT.right);
+}
+
+function yPos(hz) {
+  const fraction = hz / yMax;
+  return PLOT.height - PLOT.bottom - fraction * (PLOT.height - PLOT.top - PLOT.bottom);
+}
+
+function massLabel(power) {
+  const grams = 10 ** power;
+  return grams >= 1000 ? `${grams / 1000} kg` : `${grams} g`;
+}
+
+// Horizontal grid lines and Hz numbers
+for (let hz = 0; hz <= yMax; hz += 20) {
+  plotSvg.appendChild(svgEl("line", {
+    x1: PLOT.left, x2: PLOT.width - PLOT.right, y1: yPos(hz), y2: yPos(hz), class: "plot-grid"
+  }));
+  const label = svgEl("text", { x: PLOT.left - 8, y: yPos(hz) + 4, class: "plot-label", "text-anchor": "end" });
+  label.textContent = hz;
+  plotSvg.appendChild(label);
+}
+
+// Body-mass labels: one per power of ten (log scale)
+for (let power = xMin; power <= xMax; power++) {
+  plotSvg.appendChild(svgEl("line", {
+    x1: xPos(10 ** power), x2: xPos(10 ** power),
+    y1: PLOT.top, y2: PLOT.height - PLOT.bottom, class: "plot-grid"
+  }));
+  const label = svgEl("text", {
+    x: xPos(10 ** power), y: PLOT.height - PLOT.bottom + 18, class: "plot-label", "text-anchor": "middle"
+  });
+  label.textContent = massLabel(power);
+  plotSvg.appendChild(label);
+}
+
+// Axis titles
+const xTitle = svgEl("text", {
+  x: (PLOT.left + PLOT.width - PLOT.right) / 2, y: PLOT.height - 8, class: "plot-title", "text-anchor": "middle"
+});
+xTitle.textContent = "Body mass (log scale)";
+plotSvg.appendChild(xTitle);
+
+const yTitle = svgEl("text", {
+  x: -(PLOT.height / 2), y: 16, class: "plot-title", "text-anchor": "middle", transform: "rotate(-90)"
+});
+yTitle.textContent = "Flicker fusion frequency (Hz)";
+plotSvg.appendChild(yTitle);
+
+// One dot per animal
+SPECIES.forEach((animal, index) => {
+  const dot = svgEl("circle", {
+    cx: xPos(animal.body_mass_g),
+    cy: yPos(animal.flicker_fusion_hz),
+    r: 7,
+    class: `plot-dot dot-${animal.light_level}`,
+    tabindex: 0
+  });
+  dot.style.animationDelay = `${index * 50}ms`;
+  dot.dataset.id = animal.species_id;
+  plotSvg.appendChild(dot);
+});
+
+// ---------- Plot hover label ----------
+const plotTooltip = document.getElementById("plot-tooltip");
+const plotBox = document.getElementById("plot-box");
+
+// Show the label next to the mouse
+function showTooltip(event, animal) {
+  const box = plotBox.getBoundingClientRect();
+  plotTooltip.innerHTML =
+    `<strong>${animal.common_name}</strong><br>${animal.flicker_fusion_hz} Hz &middot; ${animal.body_mass_g} g`;
+  plotTooltip.style.left = `${event.clientX - box.left + 12}px`;
+  plotTooltip.style.top = `${event.clientY - box.top + 12}px`;
+  plotTooltip.hidden = false;
+}
+
+// Give every dot its hover behaviour
+document.querySelectorAll(".plot-dot").forEach((dot) => {
+  // Each dot remembers its species_id, so we can look up its animal
+  const animal = SPECIES.find((item) => item.species_id === dot.dataset.id);
+  dot.addEventListener("mousemove", (event) => showTooltip(event, animal));
+  dot.addEventListener("mouseleave", () => {
+    plotTooltip.hidden = true;
+  });
+});
+
+// ---------- Click a dot: go to that animal's card ----------
+function goToCard(speciesId) {
+  const animal = SPECIES.find((item) => item.species_id === speciesId);
+
+  // Look through the cards for the one with this animal's name
+  function findCard() {
+    return [...document.querySelectorAll("#grid .card")].find(
+      (card) => card.querySelector("span").textContent === animal.common_name
+    );
+  }
+
+  let card = findCard();
+  if (!card) {
+    // The filter may be hiding this animal, so show all animals and look again
+    document.querySelector('[data-filter="all"]').click();
+    card = findCard();
+  }
+  if (card) {
+    card.click();   // runs your existing code: highlight card, fill the description
+    document.getElementById("detail").scrollIntoView({ behavior: "smooth", block: "start" });  }
+}
+
+document.querySelectorAll(".plot-dot").forEach((dot) => {
+  dot.addEventListener("click", () => goToCard(dot.dataset.id));
+  // Keyboard users: press Enter on a focused dot
+  dot.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") goToCard(dot.dataset.id);
+  });
+});
