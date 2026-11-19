@@ -37,3 +37,15 @@ records = table[columns].to_dict(orient="records")
 out_file = SITE_DIR / "species_data.js"
 out_file.write_text("const SPECIES = " + json.dumps(records, indent=2) + ";\n", encoding="utf-8")
 print("Saved:", out_file, "with", len(records), "species")
+
+
+# Copy the latest plot into the site folder, so the website is self-contained
+import shutil
+
+site_results = Path(__file__).resolve().parent.parent / "site" / "results"
+site_results.mkdir(exist_ok=True)
+shutil.copy(
+    Path(__file__).resolve().parent.parent / "results" / "cff_vs_mass.png",
+    site_results / "cff_vs_mass.png",
+)
+print("Copied cff_vs_mass.png into site/results")
