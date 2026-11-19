@@ -14,11 +14,19 @@ You need Python 3 (tested with 3.14). From this folder (`Smilte_Tuskenaite`):
 
 ```bash
 pip install -r requirements.txt
-python scripts/plot_cff_vs_mass.py
-python scripts/analyse_cff.py
+python scripts/run_all.py
 ```
 
-The first script draws the plot. The second fits a straight line of CFF against log10(body mass) for each light level. Both write into `results/`. Paths are relative, so it works from any computer.
+`run_all.py` runs every step in order:
+
+1. `analyse_cff.py` fits a straight line of CFF against log10(body mass) for each light level and writes `results/fit_summary.csv`.
+2. `plot_cff_vs_mass.py` draws the plot and writes `results/cff_vs_mass.png`.
+3. `build_site_data.py` combines the data and species names into `site/species_data.js` for the website.
+4. `make_vision_images.py` makes the animal-view pictures used by the website's vision slider.
+
+Each script can also be run on its own, for example `python scripts/analyse_cff.py`. Paths are relative, so it works from any computer.
+
+To see the website, open `site/index.html` in a browser.
 
 ## Results
 
