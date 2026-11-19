@@ -418,3 +418,18 @@ footer { color: var(--muted); font-size: 0.85rem; }
 .trend-all { stroke: var(--accent); }
 .trend-H   { stroke: #ffb36b; }
 .trend-L   { stroke: #8cc8f5; }
+
+/* ---------- Fonts ---------- */
+body {
+  font-family: "Fraunces", Georgia, serif;
+}
+
+h1, h2, h3 {
+  font-family: "Fraunces", Georgia, serif;
+  letter-spacing: 0.01em;
+}
+
+/* Buttons do not copy the page font by themselves, so tell them to */
+button {
+  font-family: inherit;
+}
